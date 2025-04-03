@@ -17,7 +17,6 @@ exports.saveToken = async (req, res) => {
       message: "Token saved successfully",
     });
   } catch (error) {
-    console.log("🚀 ~ error:", error);
     return res.status(500).json({
       status: false,
       message: "Internal server error",
@@ -27,13 +26,14 @@ exports.saveToken = async (req, res) => {
 
 exports.sendNotification = async (req, res) => {
   try {
-    const { title, body } = req.body;
+    const { title, body, image } = req.body;
     const adminToken = await adminModel.findOne({});
 
     const message = {
       notification: {
         title: "New Order Received",
         body: `${title}: ${body}`,
+        // image: image,
       },
       token: adminToken.fcmToken,
     };
@@ -45,7 +45,6 @@ exports.sendNotification = async (req, res) => {
       result,
     });
   } catch (error) {
-    console.log("🚀 ~ exports.sendNotification= ~ error:", error);
     return res.status(500).json({
       status: false,
       message: error.message,
